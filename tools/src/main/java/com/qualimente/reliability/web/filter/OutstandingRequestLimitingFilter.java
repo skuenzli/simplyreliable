@@ -19,7 +19,7 @@ public class OutstandingRequestLimitingFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(OutstandingRequestLimitingFilter.class);
 
     private int maxOutstandingRequests = MAX_OUTSTANDING_REQUESTS_DEFAULT;
-    final private AtomicInteger numOutstandingRequests = new AtomicInteger(0);
+    private final AtomicInteger numOutstandingRequests = new AtomicInteger(0);
 
     public void init(FilterConfig filterConfig) throws ServletException {
         final String maxConcurrentRequestsStr = filterConfig.getInitParameter(MAX_OUTSTANDING_REQUESTS_PARAM);
