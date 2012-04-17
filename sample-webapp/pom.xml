@@ -6,7 +6,7 @@
     <artifactId>sample-webapp</artifactId>
     <packaging>war</packaging>
     <version>0.1.0-SNAPSHOT</version>
-    <name>sample-webapp</name>
+    <name>Sample Webapp</name>
     <properties>
         <aspectj.version>1.6.12</aspectj.version>
         <java.version>1.6</java.version>
@@ -476,11 +476,6 @@
                     <resultsFolder>target/gatling</resultsFolder>
                     <requestBodiesFolder>src/main/resources/request-bodies</requestBodiesFolder>
                     <simulationsFolder>src/main/resources/simulations</simulationsFolder>
-<!--
-                    <includes>
-                        <include>*.scala</include>
-                    </includes>
--->
                 </configuration>
                 <dependencies>
   		    <dependency>

@@ -1,16 +1,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.qualimente.reliability</groupId>
-  <artifactId>simplyreliable-reactor</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1.0-SNAPSHOT</version>
-  <name>Simply Reliable Reactor</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.qualimente.reliability</groupId>
+    <artifactId>simplyreliable-reactor</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>Simply Reliable Reactor</name>
 
-  <modules>
-    <module>tools</module>
-    <module>sample-webapp</module>
-  </modules>
+    <modules>
+        <module>tools</module>
+        <module>sample-webapp</module>
+    </modules>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:skuenzli/simplyreliable.git</connection>
+        <developerConnection>scm:git:git@github.com:skuenzli/simplyreliable.git</developerConnection>
+        <url>https://github.com/skuenzli/simplyreliable</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>skuenzli</id>
+            <name>Stephen Kuenzli</name>
+            <organization>QualiMente, LLC</organization>
+        </developer>
+    </developers>
+
 </project>
