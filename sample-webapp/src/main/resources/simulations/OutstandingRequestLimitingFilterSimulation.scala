@@ -18,7 +18,7 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
 			"Keep-Alive" -> "115",
 			"User-Agent" -> "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.17) Gecko/20110422 Ubuntu/9.10 (karmic) Firefox/3.6.17")
 
-		val scn = scenario("Scenario name")
+		val scn = scenario("Request overload")
       .loop(
       chain
         .exec(
@@ -26,7 +26,9 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
           .get("/sample-webapp/")
           .headers(headers_standard)
           .check(status.in(List(200, 503))))
-        .pause(0, 50, MILLISECONDS)
+          /* .pause(0, 50, MILLISECONDS) */
+          //pauseExp is supported in https://github.com/skuenzli/gatling 1.1.6-SNAPSHOT and later
+          .pauseExp(100, MILLISECONDS)
     ).during(3, MINUTES)
 
     List(scn.configure.users(100).ramp(10).protocolConfig(httpConf))
