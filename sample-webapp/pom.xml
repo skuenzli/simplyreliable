@@ -59,6 +59,17 @@
             <name>Excilys Repository</name>
             <url>http://repository.excilys.com/content/groups/public</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>qualimente-snapshot</id>
+            <name>QualiMente Snapshot Repository</name>
+            <url>http://repository-qualimente.forge.cloudbees.com/snapshot/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
     <dependencies>
 
