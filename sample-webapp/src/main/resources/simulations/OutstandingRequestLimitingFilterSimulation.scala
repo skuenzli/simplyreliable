@@ -10,7 +10,7 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
 
 		val httpConf = httpConfig.baseURL(urlBase)
       .requestInfoExtractor((request: Request) => {
-      List[String](request.getRawUrl)
+      List[String](request.getUrl)
     })
       .responseInfoExtractor((response: Response) => {
       List[String](response.getStatusCode.toString())
