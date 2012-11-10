@@ -58,9 +58,8 @@
     <filter-mapping>
         <filter-name>OutstandingRequestLimitingFilter</filter-name>
         <servlet-name>*</servlet-name>
-        <!--<servlet-name>sample-app</servlet-name>-->
     </filter-mapping>
-    
+
     <filter-mapping>
         <filter-name>HttpMethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -96,13 +95,4 @@
         <session-timeout>10</session-timeout>
     </session-config>
     
-    <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/uncaughtException</location>
-    </error-page>
-    
-    <error-page>
-        <error-code>404</error-code>
-        <location>/resourceNotFound</location>
-    </error-page>
 </web-app>
