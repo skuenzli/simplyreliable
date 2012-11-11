@@ -1,7 +1,6 @@
 package com.qualimente.reliability.web;
 
 import com.qualimente.reliability.Example;
-import com.qualimente.reliability.service.ExampleService;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
