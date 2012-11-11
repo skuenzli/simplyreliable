@@ -1,6 +1,7 @@
 package com.qualimente.reliability.web;
 
 import com.qualimente.reliability.Example;
+import com.qualimente.reliability.service.ExampleService;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,9 @@ public class ExampleController {
   public ResponseEntity<String> createFromJson(@RequestBody String json) {
     LOGGER.info("creating Example from: " + json);
     Example example = Example.fromJsonToExample(json);
-    example.persist();
+
+    exampleService.saveExample(example);
+
     LOGGER.info("persisted Example: " + example.toJson());
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/json");
@@ -35,7 +38,9 @@ public class ExampleController {
   @ResponseBody
   public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
     LOGGER.info("requested Example: " + id);
-    Example example = Example.findExample(id);
+
+    Example example = exampleService.findExample(id);
+
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/json; charset=utf-8");
     if (example == null) {
@@ -51,9 +56,12 @@ public class ExampleController {
   public ResponseEntity<String> listJson() {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/json; charset=utf-8");
-    List<Example> result = Example.findAllExamples();
+
+    List<Example> result = exampleService.findAllExamples();
+
     LOGGER.info("Examples: " + result);
     return new ResponseEntity<String>(Example.toJsonArray(result), headers, HttpStatus.OK);
   }
 
 }
+

@@ -4,10 +4,12 @@
 package com.qualimente.reliability.web;
 
 import com.qualimente.reliability.Example;
+import com.qualimente.reliability.service.ExampleService;
 import com.qualimente.reliability.web.ExampleController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,9 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect ExampleController_Roo_Controller {
     
+    @Autowired
+    ExampleService ExampleController.exampleService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ExampleController.create(@Valid Example example, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -26,7 +31,7 @@ privileged aspect ExampleController_Roo_Controller {
             return "examples/create";
         }
         uiModel.asMap().clear();
-        example.persist();
+        exampleService.saveExample(example);
         return "redirect:/examples/" + encodeUrlPathSegment(example.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +43,7 @@ privileged aspect ExampleController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String ExampleController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("example", Example.findExample(id));
+        uiModel.addAttribute("example", exampleService.findExample(id));
         uiModel.addAttribute("itemId", id);
         return "examples/show";
     }
@@ -48,11 +53,11 @@ privileged aspect ExampleController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("examples", Example.findExampleEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Example.countExamples() / sizeNo;
+            uiModel.addAttribute("examples", exampleService.findExampleEntries(firstResult, sizeNo));
+            float nrOfPages = (float) exampleService.countAllExamples() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("examples", Example.findAllExamples());
+            uiModel.addAttribute("examples", exampleService.findAllExamples());
         }
         return "examples/list";
     }
@@ -64,20 +69,20 @@ privileged aspect ExampleController_Roo_Controller {
             return "examples/update";
         }
         uiModel.asMap().clear();
-        example.merge();
+        exampleService.updateExample(example);
         return "redirect:/examples/" + encodeUrlPathSegment(example.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ExampleController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Example.findExample(id));
+        populateEditForm(uiModel, exampleService.findExample(id));
         return "examples/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String ExampleController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Example example = Example.findExample(id);
-        example.remove();
+        Example example = exampleService.findExample(id);
+        exampleService.deleteExample(example);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

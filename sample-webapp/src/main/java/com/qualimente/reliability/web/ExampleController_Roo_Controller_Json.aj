@@ -18,7 +18,7 @@ privileged aspect ExampleController_Roo_Controller_Json {
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> ExampleController.createFromJsonArray(@RequestBody String json) {
         for (Example example: Example.fromJsonArrayToExamples(json)) {
-            example.persist();
+            exampleService.saveExample(example);
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -30,7 +30,7 @@ privileged aspect ExampleController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         Example example = Example.fromJsonToExample(json);
-        if (example.merge() == null) {
+        if (exampleService.updateExample(example) == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
@@ -41,7 +41,7 @@ privileged aspect ExampleController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         for (Example example: Example.fromJsonArrayToExamples(json)) {
-            if (example.merge() == null) {
+            if (exampleService.updateExample(example) == null) {
                 return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
             }
         }
@@ -50,13 +50,13 @@ privileged aspect ExampleController_Roo_Controller_Json {
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public ResponseEntity<String> ExampleController.deleteFromJson(@PathVariable("id") Long id) {
-        Example example = Example.findExample(id);
+        Example example = exampleService.findExample(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         if (example == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        example.remove();
+        exampleService.deleteExample(example);
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
