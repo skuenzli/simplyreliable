@@ -59,7 +59,6 @@ public class ExampleController {
 
     List<Example> result = exampleService.findAllExamples();
 
-    LOGGER.info("Examples: " + result);
     return new ResponseEntity<String>(Example.toJsonArray(result), headers, HttpStatus.OK);
   }
 
