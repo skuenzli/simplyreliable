@@ -523,6 +523,9 @@
                     <resultsFolder>target/gatling</resultsFolder>
                     <requestBodiesFolder>src/main/resources/request-bodies</requestBodiesFolder>
                     <simulationsFolder>src/main/resources/simulations</simulationsFolder>
+                    <includes>
+                        <include>OutstandingRequestLimitingFilterSimulation.scala</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>

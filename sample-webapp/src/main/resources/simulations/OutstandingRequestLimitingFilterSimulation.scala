@@ -18,25 +18,13 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
       List[String](response.getStatusCode.toString())
     })
 
-    val headers_standard = Map(
-      "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      "Accept-Charset" -> "ISO-8859-1,utf-8;q=0.7,*;q=0.7",
-      "Accept-Encoding" -> "gzip,deflate",
-      "Host" -> "localhost:8080")
-
-    val headers_json = Map(
-      "Accept" -> "application/json",
-      "Accept-Charset" -> "ISO-8859-1,utf-8;q=0.7,*;q=0.7",
-      "Accept-Encoding" -> "gzip,deflate",
-      "Host" -> "localhost:8080")
-
     val setupScenario = scenario("Setup")
       .repeat(NUM_SAMPLES) {
       chain
         .exec(
         http("examples - create")
           .post("/sample-webapp/examples/")
-          .headers(headers_json)
+          .headers(StandardHeaders.JSON)
           .body("{}")
       )
     }
@@ -62,13 +50,13 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
         .exec(
         http("homepage")
           .get("/sample-webapp/")
-          .headers(headers_standard)
+          .headers(StandardHeaders.HTML)
           .check(status.in(expectedStatuses)))
 
         .exec(
         http("examples - list")
           .get("/sample-webapp/examples/")
-          .headers(headers_json)
+          .headers(StandardHeaders.JSON)
           .check(status.in(expectedStatuses))
           .check(responseTimeInMillis.lessThan(100)))
 
@@ -79,7 +67,7 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
           .exec(
           http("examples - get")
             .get("/sample-webapp/examples/${randomInt}")
-            .headers(headers_json)
+            .headers(StandardHeaders.JSON)
             .check(status.in(expectedStatuses))
             .check(responseTimeInMillis.lessThan(100))
           )
