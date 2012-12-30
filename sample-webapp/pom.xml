@@ -319,8 +319,8 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <!--<version>1.6</version>-->
-            <version>2.1</version> <!-- 2.1 is required by gatling -->
+            <!-- 2.1 is required by gatling; roo includes 1.6 -->
+            <version>2.1</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
@@ -339,7 +339,7 @@
             <version>2.2.2</version>
         </dependency>
 
-        <!-- gatling dependencies that shouldn't have to be here -->
+        <!-- gatling dependencies required for convenient simulation development -->
         <dependency>
             <groupId>com.excilys.ebi.gatling</groupId>
             <artifactId>gatling-core</artifactId>
@@ -352,30 +352,15 @@
             <version>${gatling.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.excilys.ebi.gatling</groupId>
-            <artifactId>gatling-app</artifactId>
-            <version>${gatling.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.excilys.ebi.gatling</groupId>
-            <artifactId>gatling-charts</artifactId>
-            <version>${gatling.version}</version>
-            <scope>test</scope>
-        </dependency>
+
+        <!-- gatling dependencies required for test execution -->
         <dependency>
             <groupId>com.excilys.ebi.gatling.highcharts</groupId>
             <artifactId>gatling-charts-highcharts</artifactId>
             <version>${gatling.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.joda</groupId>
-            <artifactId>joda-convert</artifactId>
-            <version>${joda-convert.version}</version>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -581,23 +566,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.excilys.ebi.gatling</groupId>
-                        <artifactId>gatling-app</artifactId>
-                        <version>${gatling.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.excilys.ebi.gatling</groupId>
-                        <artifactId>gatling-charts</artifactId>
-                        <version>${gatling.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.excilys.ebi.gatling.highcharts</groupId>
-                        <artifactId>gatling-charts-highcharts</artifactId>
-                        <version>${gatling.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
