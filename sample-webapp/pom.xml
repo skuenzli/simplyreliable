@@ -38,6 +38,17 @@
             <name>Excilys Repository</name>
             <url>http://repository.excilys.com/content/groups/public</url>
         </repository>
+        <repository>
+            <id>skuenzli-snapshot</id>
+            <name>skuenzli Snapshot Repository</name>
+            <url>http://repository-skuenzli.forge.cloudbees.com/snapshot/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
