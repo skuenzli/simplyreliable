@@ -2,10 +2,9 @@ import com.excilys.ebi.gatling.core.Predef._
 import com.excilys.ebi.gatling.http.Predef._
 import akka.util.duration._
 import com.ning.http.client.{Response, Request}
+import bootstrap._
 
 class OutstandingRequestLimitingFilterSimulation extends Simulation {
-
-  def apply = {
 
     val urlBase = "http://localhost:8080"
     val NUM_SAMPLES = 100
@@ -20,16 +19,14 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
 
     val setupScenario = scenario("Setup")
       .repeat(NUM_SAMPLES) {
-      chain
-        .exec(
+        exec(
         http("examples - create")
           .post("/sample-webapp/examples/")
           .headers(StandardHeaders.JSON)
-          .body("{}")
-      )
+          .body("{}"))
     }
 
-    val randomIntegerFeeder = new Feeder {
+    val randomIntegerFeeder = new Feeder[String] {
 
       import scala.util.Random
 
@@ -45,9 +42,8 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
 
     val expectedStatuses: List[Int] = List(200, 503)
     val overloadScenario = scenario("Request overload")
-      .loop(
-      chain
-        .exec(
+      .during(60 seconds) {
+        exec(
         http("homepage")
           .get("/sample-webapp/")
           .headers(StandardHeaders.HTML)
@@ -62,24 +58,20 @@ class OutstandingRequestLimitingFilterSimulation extends Simulation {
 
         .feed(randomIntegerFeeder)
 
-        .loop(
-        chain
-          .exec(
+        .repeat(3){
+          exec(
           http("examples - get")
             .get("/sample-webapp/examples/${randomInt}")
             .headers(StandardHeaders.JSON)
             .check(status.in(expectedStatuses))
             .check(responseTimeInMillis.lessThan(100))
           )
-        ).times(3)
-
+        }
         .pauseExp(100 milliseconds)
+    }
 
-    ).during(60, SECONDS)
-
-    List(
-      setupScenario.configure.users(1).protocolConfig(httpConf)
-      , overloadScenario.configure.users(100).ramp(10).protocolConfig(httpConf).delay(10, SECONDS)
+    setUp(
+      setupScenario.users(1).protocolConfig(httpConf)
+      , overloadScenario.delay(10 seconds).users(100).ramp(10).protocolConfig(httpConf)
     )
-  }
 }
